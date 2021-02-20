@@ -6,7 +6,7 @@ import java.util.Random;
 
 /***
  *
- * @Author:www.itheima.com
+ * @Author: Xu Rui
  * @Description:itheima
  *
  ****/
@@ -28,8 +28,8 @@ public class ChineseUtils {
         highPos = (176 + Math.abs(random.nextInt(39)));
         lowPos = 161 + Math.abs(random.nextInt(93));
         byte[] b = new byte[2];
-        b[0] = (new Integer(highPos)).byteValue();
-        b[1] = (new Integer(lowPos)).byteValue();
+        b[0] = (Integer.valueOf(highPos)).byteValue();
+        b[1] = (Integer.valueOf(lowPos)).byteValue();
         try {
             str = new String(b, "GB2312");
         } catch (UnsupportedEncodingException e) {
@@ -39,27 +39,27 @@ public class ChineseUtils {
     }
 
     public static String getFixedLengthChinese(int length) {
-        String str = "";
+        StringBuilder str = new StringBuilder();
         for (int i = length; i > 0; i--) {
-            str = str + ChineseUtils.getChinese();
+            str.append(ChineseUtils.getChinese());
         }
-        return str;
+        return str.toString();
     }
 
     public static String getRandomLengthChiness(int start, int end) {
-        String str = "";
+        StringBuilder str = new StringBuilder();
         int length = new Random().nextInt(end + 1);
         if (length < start) {
-            str = getRandomLengthChiness(start, end);
+            str = new StringBuilder(getRandomLengthChiness(start, end));
         } else {
             for (int i = 0; i < length; i++) {
-                str = str + getChinese();
+                str.append(getChinese());
             }
         }
-        return str;
+        return str.toString();
     }
 
-    public static void main(String args[]) {
+    public static void main(String[] args) {
         System.out.println(ChineseUtils.getChinese());
         System.out.println(ChineseUtils.getFixedLengthChinese(20));
         System.out.println(ChineseUtils.getRandomLengthChiness(2, 5));

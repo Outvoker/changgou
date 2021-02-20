@@ -1,5 +1,6 @@
 package entity;
 
+import lombok.Data;
 import org.apache.http.Consts;
 import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
@@ -25,9 +26,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 /*****
- * @Author: www.itheima.com
+ * @Author: Xu Rui
  * @Description: entity
  ****/
+@Data
 public class HttpClient {
     private String url;
     private Map<String, String> param;
@@ -40,18 +42,6 @@ public class HttpClient {
         return isHttps;
     }
 
-    public void setHttps(boolean isHttps) {
-        this.isHttps = isHttps;
-    }
-
-    public String getXmlParam() {
-        return xmlParam;
-    }
-
-    public void setXmlParam(String xmlParam) {
-        this.xmlParam = xmlParam;
-    }
-
     public HttpClient(String url, Map<String, String> param) {
         this.url = url;
         this.param = param;
@@ -59,10 +49,6 @@ public class HttpClient {
 
     public HttpClient(String url) {
         this.url = url;
-    }
-
-    public void setParameter(Map<String, String> map) {
-        param = map;
     }
 
     public void addParameter(String key, String value) {
@@ -139,8 +125,7 @@ public class HttpClient {
             } else {
                 httpClient = HttpClients.createDefault();
             }
-            CloseableHttpResponse response = httpClient.execute(http);
-            try {
+            try (CloseableHttpResponse response = httpClient.execute(http)) {
                 if (response != null) {
                     if (response.getStatusLine() != null) {
                         statusCode = response.getStatusLine().getStatusCode();
@@ -149,21 +134,13 @@ public class HttpClient {
                     // 响应内容
                     content = EntityUtils.toString(entity, Consts.UTF_8);
                 }
-            } finally {
-                response.close();
             }
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            httpClient.close();
+            if(httpClient != null)
+                httpClient.close();
         }
     }
 
-    public int getStatusCode() {
-        return statusCode;
-    }
-
-    public String getContent() throws ParseException, IOException {
-        return content;
-    }
 }

@@ -1,8 +1,14 @@
 package entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.io.Serializable;
 import java.util.List;
 
+@Data
+@NoArgsConstructor
 public class Page <T> implements Serializable{
 
 	// 页数（第几页）
@@ -31,10 +37,6 @@ public class Page <T> implements Serializable{
 	
 	//全局偏移量
 	public int offsize = 2;
-	
-	public Page() {
-		super();
-	}
 
 	/****
 	 *
@@ -150,81 +152,7 @@ public class Page <T> implements Serializable{
 		 * 如果结束页>总页数   结束页=总页数
 		 * 否则不管
 		 */
-		this.rpage=this.rpage>last? this.last:this.rpage;
-	}
-
-	public long getNext() {
-		return  currentpage<last? currentpage+1: last;
-	}
-
-	public void setNext(int next) {
-		this.next = next;
-	}
-
-	public long getCurrentpage() {
-		return currentpage;
-	}
-
-	public long getTotal() {
-		return total;
-	}
-
-	public void setTotal(long total) {
-		this.total = total;
-	}
-
-	public long getSize() {
-		return size;
-	}
-
-	public void setSize(int size) {
-		this.size = size;
-	}
-
-	public long getLast() {
-		return last;
-	}
-
-	public long getLpage() {
-		return lpage;
-	}
-
-	public void setLpage(int lpage) {
-		this.lpage = lpage;
-	}
-
-	public long getRpage() {
-		return rpage;
-	}
-
-	public void setRpage(int rpage) {
-		this.rpage = rpage;
-	}
-
-	public long getStart() {
-		return start;
-	}
-
-	public void setStart(long start) {
-		this.start = start;
-	}
-
-	public void setCurrentpage(long currentpage) {
-		this.currentpage = currentpage;
-	}
-
-	/**
-	 * @return the list
-	 */
-	public List<T> getList() {
-		return list;
-	}
-
-	/**
-	 * @param list the list to set
-	 */
-	public void setList(List<T> list) {
-		this.list = list;
+		this.rpage=this.rpage > last? this.last:this.rpage;
 	}
 
 	public static void main(String[] args) {

@@ -15,6 +15,7 @@
 package entity;
 
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.security.SecureRandom;
 
 /**
@@ -68,14 +69,14 @@ public class BCrypt {
 	private static final int BLOWFISH_NUM_ROUNDS = 16;
 
 	// Initial contents of key schedule
-	private static final int P_orig[] = {
+	private static final int[] P_orig = {
 		0x243f6a88, 0x85a308d3, 0x13198a2e, 0x03707344,
 		0xa4093822, 0x299f31d0, 0x082efa98, 0xec4e6c89,
 		0x452821e6, 0x38d01377, 0xbe5466cf, 0x34e90c6c,
 		0xc0ac29b7, 0xc97c50dd, 0x3f84d5b5, 0xb5470917,
 		0x9216d5d9, 0x8979fb1b
 	};
-	private static final int S_orig[] = {
+	private static final int[] S_orig = {
 		0xd1310ba6, 0x98dfb5ac, 0x2ffd72db, 0xd01adfb7,
 		0xb8e1afed, 0x6a267e96, 0xba7c9045, 0xf12c7f99,
 		0x24a19947, 0xb3916cf7, 0x0801f2e2, 0x858efc16,
@@ -337,13 +338,13 @@ public class BCrypt {
 	// bcrypt IV: "OrpheanBeholderScryDoubt". The C implementation calls
 	// this "ciphertext", but it is really plaintext or an IV. We keep
 	// the name to make code comparison easier.
-	static private final int bf_crypt_ciphertext[] = {
+	static private final int[] bf_crypt_ciphertext = {
 		0x4f727068, 0x65616e42, 0x65686f6c,
 		0x64657253, 0x63727944, 0x6f756274
 	};
 
 	// Table for Base64 encoding
-	static private final char base64_code[] = {
+	static private final char[] base64_code = {
 		'.', '/', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J',
 		'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V',
 		'W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h',
@@ -353,7 +354,7 @@ public class BCrypt {
 	};
 
 	// Table for Base64 decoding
-	static private final byte index_64[] = {
+	static private final byte[] index_64 = {
 		-1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
 		-1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
 		-1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
@@ -370,8 +371,8 @@ public class BCrypt {
 	};
 
 	// Expanded Blowfish key
-	private int P[];
-	private int S[];
+	private int[] P;
+	private int[] S;
 
 	/**
 	 * Encode a byte array using bcrypt's slightly-modified base64
@@ -383,7 +384,7 @@ public class BCrypt {
 	 * @return	base64-encoded string
 	 * @exception IllegalArgumentException if the length is invalid
 	 */
-	private static String encode_base64(byte d[], int len)
+	private static String encode_base64(byte[] d, int len)
 		throws IllegalArgumentException {
 		int off = 0;
 		StringBuffer rs = new StringBuffer();
@@ -442,7 +443,7 @@ public class BCrypt {
 		throws IllegalArgumentException {
 		StringBuffer rs = new StringBuffer();
 		int off = 0, slen = s.length(), olen = 0;
-		byte ret[];
+		byte[] ret;
 		byte c1, c2, c3, c4, o;
 
 		if (maxolen <= 0) {
@@ -490,7 +491,7 @@ public class BCrypt {
 	 * @param lr	an array containing the two 32-bit half blocks
 	 * @param off	the position in the array of the blocks
 	 */
-	private final void encipher(int lr[], int off) {
+	private final void encipher(int[] lr, int off) {
 		int i, n, l = lr[off], r = lr[off + 1];
 
 		l ^= P[0];
@@ -520,7 +521,7 @@ public class BCrypt {
 	 * current offset into data
 	 * @return	the next word of material from data
 	 */
-	private static int streamtoword(byte data[], int offp[]) {
+	private static int streamtoword(byte[] data, int[] offp) {
 		int i;
 		int word = 0;
 		int off = offp[0];
@@ -538,18 +539,18 @@ public class BCrypt {
 	 * Initialise the Blowfish key schedule
 	 */
 	private void init_key() {
-		P = (int[])P_orig.clone();
-		S = (int[])S_orig.clone();
+		P = P_orig.clone();
+		S = S_orig.clone();
 	}
 
 	/**
 	 * Key the Blowfish cipher
 	 * @param key	an array containing the key
 	 */
-	private void key(byte key[]) {
+	private void key(byte[] key) {
 		int i;
-		int koffp[] = { 0 };
-		int lr[] = { 0, 0 };
+		int[] koffp = { 0 };
+		int[] lr = { 0, 0 };
 		int plen = P.length, slen = S.length;
 
 		for (i = 0; i < plen; i++) {
@@ -575,10 +576,10 @@ public class BCrypt {
 	 * @param data	salt information
 	 * @param key	password information
 	 */
-	private void ekskey(byte data[], byte key[]) {
+	private void ekskey(byte[] data, byte[] key) {
 		int i;
-		int koffp[] = { 0 }, doffp[] = { 0 };
-		int lr[] = { 0, 0 };
+		int[] koffp = { 0 }, doffp = { 0 };
+		int[] lr = { 0, 0 };
 		int plen = P.length, slen = S.length;
 
 		for (i = 0; i < plen; i++) {
@@ -611,11 +612,11 @@ public class BCrypt {
 	 * @param cdata         the plaintext to encrypt
 	 * @return	an array containing the binary hashed password
 	 */
-	public byte[] crypt_raw(byte password[], byte salt[], int log_rounds,
-	    int cdata[]) {
+	public byte[] crypt_raw(byte[] password, byte[] salt, int log_rounds,
+							int[] cdata) {
 		int rounds, i, j;
 		int clen = cdata.length;
-		byte ret[];
+		byte[] ret;
 
 		if (log_rounds < 4 || log_rounds > 30) {
 			throw new IllegalArgumentException("Bad number of rounds");
@@ -657,7 +658,7 @@ public class BCrypt {
 	public static String hashpw(String password, String salt) {
 		BCrypt B;
 		String real_salt;
-		byte passwordb[], saltb[], hashed[];
+		byte[] passwordb, saltb, hashed;
 		char minor = (char)0;
 		int rounds, off = 0;
 		StringBuffer rs = new StringBuffer();
@@ -724,7 +725,7 @@ public class BCrypt {
 	 */
 	public static String gensalt(int log_rounds, SecureRandom random) {
 		StringBuffer rs = new StringBuffer();
-		byte rnd[] = new byte[BCRYPT_SALT_LEN];
+		byte[] rnd = new byte[BCRYPT_SALT_LEN];
 
 		random.nextBytes(rnd);
 
@@ -771,15 +772,11 @@ public class BCrypt {
 	 * @return	true if the passwords match, false otherwise
 	 */
 	public static boolean checkpw(String plaintext, String hashed) {
-		byte hashed_bytes[];
-		byte try_bytes[];
-		try {
-			String try_pw = hashpw(plaintext, hashed);
-			hashed_bytes = hashed.getBytes("UTF-8");
-			try_bytes = try_pw.getBytes("UTF-8");
-		} catch (UnsupportedEncodingException uee) {
-			return false;
-		}
+		byte[] hashed_bytes;
+		byte[] try_bytes;
+		String try_pw = hashpw(plaintext, hashed);
+		hashed_bytes = hashed.getBytes(StandardCharsets.UTF_8);
+		try_bytes = try_pw.getBytes(StandardCharsets.UTF_8);
 		if (hashed_bytes.length != try_bytes.length) {
 			return false;
 		}
