@@ -9,7 +9,7 @@ import tk.mybatis.spring.annotation.MapperScan;
  * @author Xu Rui
  * @date 2021/2/19 21:28
  */
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = {"com.changgou", "exception"})
 @EnableEurekaClient
 @MapperScan(basePackages = {"com.changgou.dao"})  //开启通用Mapper的包扫描
 public class GoodsApplication {
