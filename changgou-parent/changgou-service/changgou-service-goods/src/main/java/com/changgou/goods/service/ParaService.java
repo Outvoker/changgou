@@ -65,7 +65,12 @@ public interface ParaService {
      */
     List<Para> findAll();
 
-    List<Para> findParaByCateogryId(Integer id);
+    /***
+     * 根据分类ID查询参数列表
+     * @param id
+     * @return
+     */
+    List<Para> findByCategoryId(Integer id);
 
 }
 

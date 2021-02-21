@@ -131,8 +131,8 @@ public class ParaController {
      * @return
      */
     @GetMapping("/category/{id}")
-    public Result<List<Para>> findParaByCateogryId(@PathVariable(name = "id") Integer id) {
-        List<Para> paraList = paraService.findParaByCateogryId(id);
+    public Result<List<Para>> getByCategoryId(@PathVariable(name = "id") Integer id) {
+        List<Para> paraList = paraService.findByCategoryId(id);
         return new Result<List<Para>>(true, StatusCode.OK, "参数列表查询成功", paraList);
     }
 

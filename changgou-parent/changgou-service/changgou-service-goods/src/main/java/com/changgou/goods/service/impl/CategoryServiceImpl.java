@@ -22,7 +22,6 @@ public class CategoryServiceImpl implements CategoryService {
     @Resource
     private CategoryMapper categoryMapper;
 
-
     /**
      * Category条件+分页查询
      * @param category 查询条件
@@ -159,6 +158,11 @@ public class CategoryServiceImpl implements CategoryService {
         return categoryMapper.selectAll();
     }
 
+    /**
+     * 根据分类的父ID查询子分类节点集合
+     * @param pid
+     * @return
+     */
     @Override
     public List<Category> findByParentId(Integer pid) {
         //SELECT * from tb_category where parent_id=0
@@ -166,8 +170,7 @@ public class CategoryServiceImpl implements CategoryService {
         Category record = new Category();
         record.setParentId(pid);//查询的条件  相当于 where parent_id=0
         //record.setId(1);//where parent_id=0 and id = 1
-        List<Category> categoryList = categoryMapper.select(record);
 
-        return categoryList;
+        return categoryMapper.select(record);
     }
 }

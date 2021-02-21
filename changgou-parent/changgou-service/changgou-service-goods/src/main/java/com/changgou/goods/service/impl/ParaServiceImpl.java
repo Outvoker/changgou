@@ -161,13 +161,18 @@ public class ParaServiceImpl implements ParaService {
         return paraMapper.selectAll();
     }
 
+    /***
+     * 根据分类ID查询参数列表
+     * @param id
+     * @return
+     */
     @Override
-    public List<Para> findParaByCateogryId(Integer id) {
-        //1.根据分类的ID 获取到模板的ID
+    public List<Para> findByCategoryId(Integer id) {
+        //查询分类信息
         Category category = categoryMapper.selectByPrimaryKey(id);
-        //2.根据模板的ID 获取参数的列表 返回
-        Para param = new Para();
-        param.setTemplateId(category.getTemplateId());
-        return paraMapper.select(param);
+        //根据分类的模板ID查询参数列表
+        Para para = new Para();
+        para.setTemplateId(category.getTemplateId());
+        return paraMapper.select(para);
     }
 }

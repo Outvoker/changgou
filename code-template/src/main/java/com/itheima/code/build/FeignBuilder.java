@@ -5,7 +5,7 @@ import java.util.Map;
 /****
  * @author Xu Rui
  * @Description:Feign构建
- * @Date 2019/6/14 19:13
+ *
  *****/
 public class FeignBuilder {
 

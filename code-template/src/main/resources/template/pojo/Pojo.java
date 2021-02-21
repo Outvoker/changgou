@@ -2,6 +2,7 @@ package ${package_pojo};
 <#if swagger==true>
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
 </#if>
 import javax.persistence.*;
 import java.io.Serializable;
@@ -11,12 +12,13 @@ import ${set};
 /****
  * @author Xu Rui
  * @Description:${Table}构建
- * @Date 2019/6/14 19:13
+ *
  *****/
 <#if swagger==true>
 @ApiModel(description = "${Table}",value = "${Table}")
 </#if>
 @Table(name="${TableName}")
+@Data
 public class ${Table} implements Serializable{
 
 <#list models as model>
@@ -34,18 +36,6 @@ public class ${Table} implements Serializable{
 
 </#list>
 
-
-<#list models as model>
-	//get方法
-	public ${model.simpleType} get${model.upperName}() {
-		return ${model.name};
-	}
-
-	//set方法
-	public void set${model.upperName}(${model.simpleType} ${model.name}) {
-		this.${model.name} = ${model.name};
-	}
-</#list>
 
 
 }
