@@ -70,6 +70,11 @@ public class Page <T> implements Serializable{
 		return currentpage>1? currentpage-1: currentpage;
 	}
 
+	//下一页
+	public long getNext() {
+		return currentpage<last? currentpage+1: currentpage;
+	}
+
 	//总共有多少页，即末页
 	public void setLast(int last) {
 		this.last = (int) (total%size==0? total/size : (total/size)+1);

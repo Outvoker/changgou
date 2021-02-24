@@ -2,6 +2,7 @@ package exception;
 
 import entity.Result;
 import entity.StatusCode;
+import org.springframework.context.annotation.Bean;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;

@@ -6,6 +6,7 @@ import com.github.pagehelper.PageInfo;
 import entity.Result;
 import entity.StatusCode;
 import io.swagger.annotations.*;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -20,10 +21,23 @@ import java.util.List;
 @RestController
 @RequestMapping("/sku")
 @CrossOrigin
+@Slf4j
 public class SkuController {
 
     @Resource
     private SkuService skuService;
+
+    /***
+     * 根据审核状态查询Sku
+     * @param status
+     * @return
+     */
+    @GetMapping("/status/{status}")
+    public Result<List<Sku>> findByStatus(@PathVariable String status){
+        log.info("findByStatus({})", status);
+        List<Sku> list = skuService.findByStatus(status);
+        return new Result<List<Sku>>(true,StatusCode.OK,"查询成功",list);
+    }
 
     /***
      * Sku分页条件搜索实现

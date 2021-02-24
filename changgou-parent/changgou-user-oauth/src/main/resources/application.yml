@@ -1,0 +1,39 @@
+server:
+  port: 59001
+spring:
+  application:
+    name: user-auth
+  redis:
+    host: 10.177.73.40
+    port: 6379
+    password:
+    jedis:
+      pool:
+        max-active: 8
+        max-idle: 8
+        min-idle: 0
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://10.177.73.40:3306/changgou_oauth?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowMultiQueries=true&serverTimezone=UTC
+    username: root
+    password: 123456
+  main:
+    allow-bean-definition-overriding: true
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    service-url:
+      defaultZone: http://127.0.0.1:57001/eureka
+auth:
+  ttl: 3600  #token存储到redis的过期时间
+  clientId: changgou
+  clientSecret: changgou
+  cookieDomain: localhost
+  cookieMaxAge: -1
+encrypt:  #本地证书和密钥以及证书密码配置
+  key-store:
+    location: classpath:/changgou.jks #证书路径
+    secret: changgou  #密钥
+    alias: changgou #证书别名
+    password: changgou  #证书密码

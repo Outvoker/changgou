@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 /****
  * @author Xu Rui
  * @Description:
- * @Date 2019/6/18 13:58
+ *
  *****/
 @FeignClient(name="${serviceName}")
 @RequestMapping("/${table}")

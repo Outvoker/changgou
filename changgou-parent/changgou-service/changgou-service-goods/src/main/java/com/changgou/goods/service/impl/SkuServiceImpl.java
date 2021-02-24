@@ -15,7 +15,7 @@ import java.util.List;
 /****
  * @author Xu Rui
  * @Description:Sku业务层接口实现类
- * @Date 2019/6/14 0:16
+ *
  *****/
 @Service
 public class SkuServiceImpl implements SkuService {
@@ -23,6 +23,17 @@ public class SkuServiceImpl implements SkuService {
     @Resource
     private SkuMapper skuMapper;
 
+    /**
+     * 根据状态查询SKU列表
+     * @param status
+     * @return
+     */
+    @Override
+    public List<Sku> findByStatus(String status) {
+        Sku sku = new Sku();
+        sku.setStatus(status);
+        return skuMapper.select(sku);
+    }
 
     /**
      * Sku条件+分页查询
