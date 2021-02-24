@@ -1,11 +1,9 @@
 package com.changgou.oauth.util;
 
-
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 
 import java.util.Collection;
-
 
 public class UserJwt extends User {
     private String id;    //用户ID

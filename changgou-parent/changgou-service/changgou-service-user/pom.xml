@@ -12,6 +12,11 @@
     <artifactId>changgou-service-user</artifactId>
 
     <dependencies>
+<!--        令牌解析-->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-oauth2</artifactId>
+        </dependency>
         <dependency>
             <groupId>com.changgou</groupId>
             <artifactId>changgou-service-user-api</artifactId>
