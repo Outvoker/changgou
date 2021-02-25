@@ -14,6 +14,12 @@ import java.util.List;
 @FeignClient(value="goods")
 @RequestMapping("/sku")
 public interface SkuFeign {
+    /***
+     * 根据ID查询SKU信息
+     * @param id : sku的ID
+     */
+    @GetMapping(value = "/{id}")
+    Result<Sku> findById(@PathVariable(value = "id", required = true) Long id);
 
     /***
      * 根据审核状态查询Sku

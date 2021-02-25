@@ -18,6 +18,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @FeignClient(value="goods")
 @RequestMapping("/spu")
 public interface SpuFeign {
+    /***
+     * 根据SpuID查询Spu信息
+     * @param id
+     * @return
+     */
     @GetMapping("/{id}")
     Result<Spu> findById(@PathVariable(name = "id") Long id);
 }

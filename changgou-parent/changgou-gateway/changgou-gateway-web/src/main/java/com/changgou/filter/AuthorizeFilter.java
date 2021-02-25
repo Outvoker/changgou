@@ -42,7 +42,7 @@ public class AuthorizeFilter implements GlobalFilter, Ordered {
         String path = request.getURI().getPath();
 
         //如果是登录、goods等开放的微服务[这里的goods部分开放],则直接放行,这里不做完整演示，完整演示需要设计一套权限系统
-        if (path.startsWith("/api/user/login") || path.startsWith("/api/brand/search/")) {
+        if (!URLFilter.hasAuthorize(path)) {
             //放行
             Mono<Void> filter = chain.filter(exchange);
             return filter;
@@ -71,19 +71,31 @@ public class AuthorizeFilter implements GlobalFilter, Ordered {
             //设置没有权限，401错误代码
             response.setStatusCode(HttpStatus.UNAUTHORIZED);
             return response.setComplete();
+        }else{
+            if(!hasToken){
+                //令牌判断是否为空，如果不为空，则将令牌放到头文件中，放行
+                //判断令牌是否有bearer前缀
+                if(!token.startsWith("bearer ") && !token.startsWith("Bearer ")){
+                    token = "bearer " + token;
+                }
+                //将令牌封装到头文件中
+                request.mutate().header(AUTHORIZE_TOKEN, token);
+            }
+
         }
 
-        //解析令牌数据
-        try {
-            Claims claims = JwtUtil.parseJWT(token);
-        } catch (Exception e) {
-            e.printStackTrace();
-            //解析失败，响应401错误
-            response.setStatusCode(HttpStatus.UNAUTHORIZED);
-            return response.setComplete();
-        }
 
-        request.mutate().header(AUTHORIZE_TOKEN, token);
+//        //解析令牌数据
+//        try {
+//            Claims claims = JwtUtil.parseJWT(token);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            //解析失败，响应401错误
+//            response.setStatusCode(HttpStatus.UNAUTHORIZED);
+//            return response.setComplete();
+//        }
+
+
 
         //放行
         return chain.filter(exchange);

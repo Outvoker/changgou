@@ -8,6 +8,15 @@ spring:
     url: jdbc:mysql://10.177.73.40:3306/changgou_user?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
     username: root
     password: 123456
+  redis:
+    host: 10.177.73.40
+    port: 6379
+    password:
+    jedis:
+      pool:
+        max-active: 8
+        max-idle: 8
+        min-idle: 0
 eureka:
   client:
     service-url:
