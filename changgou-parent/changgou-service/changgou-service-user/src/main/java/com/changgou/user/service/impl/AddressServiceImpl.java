@@ -23,6 +23,17 @@ public class AddressServiceImpl implements AddressService {
     @Autowired
     private AddressMapper addressMapper;
 
+    /**
+     * 根据用户登录名字查询用户收件地址列表信息
+     * @param username
+     * @return
+     */
+    @Override
+    public List<Address> list(String username) {
+        Address address = new Address();
+        address.setUsername(username);
+        return addressMapper.select(address);
+    }
 
     /**
      * Address条件+分页查询

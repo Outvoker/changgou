@@ -14,6 +14,15 @@ import java.util.List;
 @FeignClient(value="goods")
 @RequestMapping("/sku")
 public interface SkuFeign {
+
+    /***
+     * 库存递减
+     * @param username
+     * @return
+     */
+    @PostMapping(value = "/decr/count")
+    Result decrCount(@RequestParam(value = "username") String username);
+
     /***
      * 根据ID查询SKU信息
      * @param id : sku的ID

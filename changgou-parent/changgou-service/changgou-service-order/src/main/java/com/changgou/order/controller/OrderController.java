@@ -5,11 +5,13 @@ import com.changgou.order.service.OrderService;
 import com.github.pagehelper.PageInfo;
 import entity.Result;
 import entity.StatusCode;
+import entity.TokenDecode;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 /****
  * @author Xu Rui
@@ -24,6 +26,7 @@ public class OrderController {
 
     @Autowired
     private OrderService orderService;
+
 
     /***
      * Order分页条件搜索实现
@@ -114,7 +117,11 @@ public class OrderController {
     @ApiOperation(value = "Order添加",notes = "添加Order方法详情",tags = {"OrderController"})
     @PostMapping
     public Result add(@RequestBody  @ApiParam(name = "Order对象",value = "传入JSON数据",required = true) Order order){
-        //调用OrderService实现添加Order
+        //获取用户名
+        Map<String, String> userMap = TokenDecode.getUserInfo();
+        String username = userMap.get("username");
+        //设置购买用户
+        order.setUsername(username);
         orderService.add(order);
         return new Result(true,StatusCode.OK,"添加成功");
     }

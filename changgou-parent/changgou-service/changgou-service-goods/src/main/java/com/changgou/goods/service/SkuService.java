@@ -12,6 +12,8 @@ import java.util.List;
  *****/
 public interface SkuService {
 
+    void decrCount(String username);
+
     /**
      * 根据状态查询SKU列表
      * @param status
